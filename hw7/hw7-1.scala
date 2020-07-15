@@ -1,0 +1,5 @@
+val userData = sc.textFile("loudacre/accounts").map(line => line.split(",")).map(arr => (arr(0), arr))
+val setupCountsRDD = sc.textFile("loudacre/weblog").map(line => (line.split(" ")(2), 1))
+val requestCountsRDD = setupCountsRDD.reduceByKey(_ + _)
+val joinedRDD = userData.join(requestCountsRDD)
+joinedRDD.take(5).foreach(line => println(line._1, line._2._2, line._2._1(3), line._2._1(4)))
